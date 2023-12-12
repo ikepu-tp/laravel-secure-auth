@@ -1,0 +1,36 @@
+{
+    "name": "ikepu-tp/laravel-secure-auth",
+    "description": "",
+    "type": "library",
+    "keywords": [
+        "laravel"
+    ],
+    "homepage": "https://ikepu-tp.com",
+    "support": {
+        "issues": "https://github.com/ikepu-tp/laravel-secure-auth/issues",
+        "source": "https://github.com/ikepu-tp/laravel-secure-auth"
+    },
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^10.8"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "ikepu_tp\\SecureAuth\\": "./src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "ikepu-tp",
+            "email": "program@ikepu-tp.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ikepu_tp\\SecureAuth\\SecureAuthServiceProvider"
+            ]
+        }
+    }
+}
