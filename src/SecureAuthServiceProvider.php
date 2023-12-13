@@ -2,9 +2,12 @@
 
 namespace ikepu_tp\SecureAuth;
 
+use ikepu_tp\SecureAuth\app\Events\TFAEvent;
+use ikepu_tp\SecureAuth\app\Listeners\TFAListener;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Event;
 
 class SecureAuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +28,7 @@ class SecureAuthServiceProvider extends ServiceProvider
         $this->defineRoutes();
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->loadViewsFrom(__DIR__ . "/resources/views", "SecureAuth");
+        Event::listen(TFAEvent::class, TFAListener::class);
         Paginator::useBootstrap();
         Blade::componentNamespace("ikepu_tp\\resources\\views\\components", "SecureAuth");
     }

@@ -3,6 +3,7 @@
 namespace ikepu_tp\SecureAuth\app\Models;
 
 use DateTime;
+use ikepu_tp\SecureAuth\app\Events\TFAEvent;
 
 class TFA
 {
@@ -76,11 +77,12 @@ class TFA
      */
     public function setTFA(array|null $value = null): void
     {
-        if (is_null($value) && $this->isValid()) {
+        if (is_null($value) && !$this->isValid()) {
             $this->generateTFA();
             $value = $this->toArray();
         }
         session()->push("__tfa", $value);
+        event(new TFAEvent($this));
     }
 
     public function getTFA(): array
