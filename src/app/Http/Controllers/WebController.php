@@ -2,10 +2,10 @@
 
 namespace ikepu_tp\SecureAuth\app\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller as BaseController;
-use ikepu_tp\SecureAuth\app\Http\Requests\StoreRequest;
-use ikepu_tp\SecureAuth\app\Http\Requests\UpdateRequest;
+use ikepu_tp\SecureAuth\app\Http\Requests\WebRequest;
+use ikepu_tp\SecureAuth\app\Models\TFA;
+use Illuminate\Http\Request;
 
 class WebController extends BaseController
 {
@@ -27,9 +27,18 @@ class WebController extends BaseController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRequest $storeRequest)
+    public function store(WebRequest $webRequest)
     {
-        //
+        dd($webRequest->session()->get("__tfa"));
+        return back()->with("errors", $webRequest->validated());
+    }
+
+    public function resend()
+    {
+        $tfa = new TFA();
+        $tfa->generateTFA();
+        $tfa->setTFA($tfa->toArray());
+        return back()->with("status", "登録メールアドレスに認証コードを送信しました。");
     }
 
     /**
@@ -51,7 +60,7 @@ class WebController extends BaseController
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $updateRequest, string $user_id)
+    public function update(WebRequest $webRequest, string $user_id)
     {
         //
     }

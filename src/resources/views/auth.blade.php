@@ -20,6 +20,13 @@
           </button>
         </div>
       </form>
+      <form action="{{ route('__tfa.resend') }}" method="post">
+        @csrf
+        <p>
+          認証コードを再送しますか？
+        </p>
+        <button type="submit" class="btn btn-secondary">認証コードの再送</button>
+      </form>
     </div>
   </div>
 @endsection
