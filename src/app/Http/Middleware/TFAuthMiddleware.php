@@ -44,6 +44,6 @@ class TFAuthMiddleware
 
     private function redirectToAuth(): Response
     {
-        return response()->redirectTo("");
+        return response()->redirectTo(route("__tfa.create"));
     }
 }

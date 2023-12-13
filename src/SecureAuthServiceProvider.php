@@ -28,7 +28,9 @@ class SecureAuthServiceProvider extends ServiceProvider
         $this->defineRoutes();
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->loadViewsFrom(__DIR__ . "/resources/views", "SecureAuth");
+
         Event::listen(TFAEvent::class, TFAListener::class);
+
         Paginator::useBootstrap();
         Blade::componentNamespace("ikepu_tp\\resources\\views\\components", "SecureAuth");
     }
@@ -45,9 +47,9 @@ class SecureAuthServiceProvider extends ServiceProvider
         ], 'SecureAuth-config');
 
 
-        $this->publishMigration();
+        //$this->publishMigration();
         $this->publishView();
-        $this->publishAsset();
+        //$this->publishAsset();
     }
 
     private function publishMigration(): void
@@ -58,7 +60,7 @@ class SecureAuthServiceProvider extends ServiceProvider
                 __DIR__ . "/database/migrations/{$migration}" => database_path(
                     "migrations/{$migration}"
                 ),
-            ], 'migrations');
+            ], 'SecureAuth-migrations');
         }
     }
 
