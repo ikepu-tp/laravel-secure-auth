@@ -29,10 +29,7 @@ class SecureAuthServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->loadViewsFrom(__DIR__ . "/resources/views", "SecureAuth");
 
-        Event::listen(TFAEvent::class, TFAListener::class);
-
-        Paginator::useBootstrap();
-        Blade::componentNamespace("ikepu_tp\\resources\\views\\components", "SecureAuth");
+        Blade::componentNamespace("ikepu_tp\\SecureAuth\\resources\\views\\components", "SecureAuth");
     }
 
     /**
