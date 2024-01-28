@@ -62,7 +62,7 @@ class TfaService
      */
     public function generate(array $payload = []): void
     {
-        $this->token = (string)str_pad(rand(0, 999999), 6, 0, STR_PAD_LEFT);
+        $this->token = (string)str_pad(rand(0, 999999), config("secure-auth.token_digits", 6), 0, STR_PAD_LEFT);
         $this->payload = $payload;
         $this->expired_at = now();
         $this->expired_at->addMinutes(config("secure-auth.expires_minutes", 10));
@@ -132,7 +132,15 @@ class TfaService
         return true;
     }
 
-    static public function loginCallback(\Illuminate\Foundation\Auth\User $user, bool $remember = false, string $guard = null)
+    /**
+     * login callback
+     *
+     * @param \Illuminate\Foundation\Auth\User $user
+     * @param boolean $remember
+     * @param string|null $guard
+     * @return void
+     */
+    static public function loginCallback(\Illuminate\Foundation\Auth\User $user, bool $remember = false, string $guard = null): void
     {
         session()->regenerate();
         Auth::guard($guard)->login($user, $remember);

@@ -32,7 +32,7 @@ class WebController extends BaseController
      */
     public function store(WebRequest $webRequest): RedirectResponse
     {
-        if (!TfaService::attempt($webRequest->input("tfa_token"))) return back()->with("error", "認証コードが一致しません。");
+        if (!TfaService::attempt($webRequest->input("tfa_token"), config("secure-auth.loginCallback"))) return back()->with("error", "認証コードが一致しません。");
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
