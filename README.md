@@ -18,7 +18,7 @@ composer require ikepu-tp/laravel-secure-auth
 php artisan migrate
 ```
 
-### 3. Configuration files.
+### 3. Configuration files
 
 ```bash
 php artisan vendor:publish --tags=SecureAuth-config
