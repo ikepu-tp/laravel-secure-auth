@@ -5,13 +5,37 @@
       <p>
         登録メールアドレスに送信された2段階認証コードを入力してください。
       </p>
+      @if (session('status'))
+        <div class="alert alert-info">
+          {{ session('status') }}
+        </div>
+      @endif
+      @isset($status)
+        <div class="alert alert-info">
+          {{ $status }}
+        </div>
+      @endisset
       <form action="{{ route('__tfa.store') }}" method="post">
         @csrf
         <div>
           <label class="form-label">
             認証コード
-            <input type="text" name="tfa_token" class="form-control mt-2" placeholder="認証コードの入力" maxlength="6" autofocus
-              required>
+            <input type="text" name="tfa_token" class="form-control mt-2 {{ session('error') ? 'is-invalid' : '' }}"
+              placeholder="認証コードの入力" maxlength="6" autofocus required>
+            <div class="invalid-feedback">
+              @if (session('error'))
+                {{ session('error') }}
+              @endif
+              <ul>
+                @if ($errors->has('tfa_token'))
+                  @foreach ($errors->get('tfa_token') as $error)
+                    <li>
+                      {{ $error }}
+                    </li>
+                  @endforeach
+                @endif
+              </ul>
+            </div>
           </label>
         </div>
         <div class="mt-3">

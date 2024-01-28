@@ -3,8 +3,10 @@
 namespace ikepu_tp\SecureAuth\app\Http\Controllers;
 
 use App\Http\Controllers\Controller as BaseController;
+use App\Providers\RouteServiceProvider;
 use ikepu_tp\SecureAuth\app\Http\Requests\WebRequest;
-use ikepu_tp\SecureAuth\app\Models\TFA;
+use ikepu_tp\SecureAuth\app\Http\Services\TfaService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class WebController extends BaseController
@@ -27,17 +29,14 @@ class WebController extends BaseController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(WebRequest $webRequest)
+    public function store(WebRequest $webRequest): RedirectResponse
     {
-        dd($webRequest->session()->get("__tfa"));
-        return back()->with("errors", $webRequest->validated());
+        if (!TfaService::attempt($webRequest->input("tfa_token"))) return back()->with("error", "認証コードが一致しません。");
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     public function resend()
     {
-        $tfa = new TFA();
-        $tfa->generateTFA();
-        $tfa->setTFA($tfa->toArray());
         return back()->with("status", "登録メールアドレスに認証コードを送信しました。");
     }
 

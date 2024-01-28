@@ -2,19 +2,19 @@
 
 namespace ikepu_tp\SecureAuth\app\Notifications;
 
-use ikepu_tp\SecureAuth\app\Models\TFA;
+use ikepu_tp\SecureAuth\app\Models\Tfa;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TFANotify extends Notification
+class TfaNotification extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(private TFA $tfa)
+    public function __construct(private Tfa $tfa)
     {
         //
     }
@@ -37,7 +37,7 @@ class TFANotify extends Notification
         return (new MailMessage)
             ->subject("2段階認証認証コード")
             ->line("以下のコードを入力し，認証してください。")
-            ->line("認証コード： {$this->tfa->value}");
+            ->line("認証コード： {$this->tfa->token}");
     }
 
     /**
