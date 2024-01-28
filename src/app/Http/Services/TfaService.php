@@ -128,6 +128,7 @@ class TfaService
         }
 
         $tfa->delete();
+        static::prune_expired_at();
         return true;
     }
 
