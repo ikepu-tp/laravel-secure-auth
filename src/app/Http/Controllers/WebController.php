@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller as BaseController;
 use App\Providers\RouteServiceProvider;
 use ikepu_tp\SecureAuth\app\Http\Requests\WebRequest;
 use ikepu_tp\SecureAuth\app\Http\Services\TfaService;
+use ikepu_tp\SecureAuth\app\Models\Tfa;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -37,6 +38,13 @@ class WebController extends BaseController
 
     public function resend()
     {
+        $tfa = Tfa::query()
+            ->where("session_id", session()->getId())
+            ->first();
+        $user = session()->pull("__tfa.user");
+        $remember = session()->pull("__tfa.remember");
+        $guard = session()->pull("__tfa.guard");
+        TfaService::make($user, $remember, $tfa ? $tfa->payload : [], $guard);
         return back()->with("status", "登録メールアドレスに認証コードを送信しました。");
     }
 
