@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->uuid('loginId')->unique()->index();
             $table->string('user_id')->index();
-            $table->string('guard');
             $table->ipAddress("ip_address");
             $table->text("user_agent");
             $table->string("device");
