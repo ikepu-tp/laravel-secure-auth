@@ -28,4 +28,11 @@ return [
         session()->regenerate();
         Auth::guard($guard)->login($user, $remember);
     }*/
+
+    /**
+     * ----------------------------------------------------------------
+     * Login Histories
+     * ----------------------------------------------------------------
+     */
+    "login_history" => true,
 ];
