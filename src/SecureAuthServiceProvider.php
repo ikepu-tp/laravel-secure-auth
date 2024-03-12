@@ -28,7 +28,7 @@ class SecureAuthServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->loadViewsFrom(__DIR__ . "/resources/views", "SecureAuth");
 
-        Event::listen(LoginEvent::class, LoginListener::class);
+        if (config("secure-auth.login_history")) Event::listen(LoginEvent::class, LoginListener::class);
 
         Blade::componentNamespace("ikepu_tp\\SecureAuth\\resources\\views\\components", "SecureAuth");
     }
