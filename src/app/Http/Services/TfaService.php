@@ -3,6 +3,7 @@
 namespace ikepu_tp\SecureAuth\app\Http\Services;
 
 use Exception;
+use ikepu_tp\SecureAuth\app\Events\LoginEvent;
 use ikepu_tp\SecureAuth\app\Models\Tfa;
 use ikepu_tp\SecureAuth\app\Notifications\TFANotification;
 use Illuminate\Http\RedirectResponse;
@@ -143,6 +144,7 @@ class TfaService
     static public function loginCallback(\Illuminate\Foundation\Auth\User $user, bool $remember = false, string $guard = null): void
     {
         session()->regenerate();
+        event(new LoginEvent($user));
         Auth::guard($guard)->login($user, $remember);
     }
 

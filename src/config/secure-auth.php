@@ -26,8 +26,9 @@ return [
     "loginCallback" => null,
     /*"loginCallback" => function (\Illuminate\Foundation\Auth\User $user, bool $remember = false, string $guard = null): void {
         session()->regenerate();
-        Auth::guard($guard)->login($user, $remember);
-    }*/
+        event(new \ikepu_tp\SecureAuth\app\Events\LoginEvent($user));
+        \Illuminate\Support\Facades\Auth::guard($guard)->login($user, $remember);
+    },*/
 
     /**
      * ----------------------------------------------------------------

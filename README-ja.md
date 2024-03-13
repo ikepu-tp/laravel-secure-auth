@@ -31,9 +31,9 @@ php artisan vendor:publish --tags=SecureAuth-config
 | loginCallback    | ログイン処理の関数           |
 | login_history    | ログイン履歴を記録するか否か |
 
-### Two-factor authentication
+### 2段階認証
 
-> [!info]
+> [!IMPORTANT]
 > 設定ファイルの`loginCallback`でログイン処理関数の設定を行なってください。
 
 ```php:AuthController Sample
@@ -46,7 +46,21 @@ php artisan vendor:publish --tags=SecureAuth-config
             ->where("email", $request->validated("email"))
             ->first();
         if (!$user) throw new UnauthorizedException();
-        return TfaService::make($user, $request->validated("remember", false));
+        return \ikepu_tp\SecureAuth\app\Http\Services\TfaService::make($user, $request->validated("remember", false));
+    }
+```
+
+### ログイン履歴の記録
+
+> [!IMPORTANT]
+> ログイン処理中にログインイベントを発行してください。
+
+```php Login Function Sample
+    public function login(User $user)
+    {
+        session()->regenerate();
+        event(new \ikepu_tp\SecureAuth\app\Events\LoginEvent($user));
+        \Illuminate\Support\Facades\Auth::guard($guard)->login($user, $remember);
     }
 ```
 

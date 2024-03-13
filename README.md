@@ -35,7 +35,7 @@ Change the configuration as necessary.
 
 ### Two-factor authentication
 
-> [!info]
+> [!IMPORTANT]
 > Set up the login handling function in the `loginCallback` configuration file.
 
 ```php:AuthController Sample
@@ -48,7 +48,21 @@ Change the configuration as necessary.
             ->where("email", $request->validated("email"))
             ->first();
         if (!$user) throw new UnauthorizedException();
-        return TfaService::make($user, $request->validated("remember", false));
+        return \ikepu_tp\SecureAuth\app\Http\Services\TfaService::make($user, $request->validated("remember", false));
+    }
+```
+
+### Record Login History
+
+> [!IMPORTANT]
+> Issue a login event during the login process.
+
+```php Login Function Sample
+    public function login(User $user)
+    {
+        session()->regenerate();
+        event(new \ikepu_tp\SecureAuth\app\Events\LoginEvent($user));
+        \Illuminate\Support\Facades\Auth::guard($guard)->login($user, $remember);
     }
 ```
 
