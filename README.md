@@ -32,6 +32,7 @@ Change the configuration as necessary.
 | token_digits     | number of digits in token              |
 | loginCallback    | function of login process              |
 | login_history    | Whether to record login history or not |
+| login_email      | send an email which notify login       |
 
 ### Two-factor authentication
 

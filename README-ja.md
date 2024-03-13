@@ -30,6 +30,7 @@ php artisan vendor:publish --tags=SecureAuth-config
 | token_digits     | トークンの桁数               |
 | loginCallback    | ログイン処理の関数           |
 | login_history    | ログイン履歴を記録するか否か |
+| login_email      | ログイン時のメール送信       |
 
 ### 2段階認証
 
