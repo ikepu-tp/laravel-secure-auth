@@ -26,11 +26,31 @@ php artisan vendor:publish --tags=SecureAuth-config
 
 Change the configuration as necessary.
 
-| key entries      | description               |
-| ---------------- | ------------------------- |
-| expires_minitues | token_expires_minutes     |
-| token_digits     | number of digits in token |
-| loginCallback    | function of login process |
+| key entries      | description                            |
+| ---------------- | -------------------------------------- |
+| expires_minitues | token_expires_minutes                  |
+| token_digits     | number of digits in token              |
+| loginCallback    | function of login process              |
+| login_history    | Whether to record login history or not |
+
+### Two-factor authentication
+
+> [!info]
+> Set up the login handling function in the `loginCallback` configuration file.
+
+```php:AuthController Sample
+    /**
+     * Handle an incoming authentication request.
+     */
+    public function store(LoginRequest $request): RedirectResponse
+    {
+        $user = User::query()
+            ->where("email", $request->validated("email"))
+            ->first();
+        if (!$user) throw new UnauthorizedException();
+        return TfaService::make($user, $request->validated("remember", false));
+    }
+```
 
 ## Contributtion
 

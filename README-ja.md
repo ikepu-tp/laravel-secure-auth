@@ -24,11 +24,31 @@ php artisan vendor:publish --tags=SecureAuth-config
 
 必要に応じて設定内容を変更してください。
 
-| キー項目         | 説明                 |
-| ---------------- | -------------------- |
-| expires_minitues | トークンの期限（分） |
-| token_digits     | トークンの桁数       |
-| loginCallback    | ログイン処理の関数   |
+| キー項目         | 説明                         |
+| ---------------- | ---------------------------- |
+| expires_minitues | トークンの期限（分）         |
+| token_digits     | トークンの桁数               |
+| loginCallback    | ログイン処理の関数           |
+| login_history    | ログイン履歴を記録するか否か |
+
+### Two-factor authentication
+
+> [!info]
+> 設定ファイルの`loginCallback`でログイン処理関数の設定を行なってください。
+
+```php:AuthController Sample
+    /**
+     * Handle an incoming authentication request.
+     */
+    public function store(LoginRequest $request): RedirectResponse
+    {
+        $user = User::query()
+            ->where("email", $request->validated("email"))
+            ->first();
+        if (!$user) throw new UnauthorizedException();
+        return TfaService::make($user, $request->validated("remember", false));
+    }
+```
 
 ## 貢献
 
