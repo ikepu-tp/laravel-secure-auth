@@ -4,6 +4,7 @@ namespace ikepu_tp\SecureAuth\app\Listeners;
 
 use ikepu_tp\SecureAuth\app\Events\LoginEvent;
 use ikepu_tp\SecureAuth\app\Models\Sa_login_history;
+use ikepu_tp\SecureAuth\app\Notifications\LoginNotification;
 use Illuminate\Support\Facades\Request;
 use Jenssegers\Agent\Agent;
 use Illuminate\Support\Str;
@@ -37,5 +38,7 @@ class LoginListener
             "browser" => $browser,
         ]);
         $sa_login_history->save();
+
+        if (config("secure-auth.login_email")) $event->user->notify(new LoginNotification($sa_login_history));
     }
 }
