@@ -6,6 +6,7 @@ use Exception;
 use ikepu_tp\SecureAuth\app\Events\LoginEvent;
 use ikepu_tp\SecureAuth\app\Models\Tfa;
 use ikepu_tp\SecureAuth\app\Notifications\TFANotification;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -131,6 +132,7 @@ class TfaService
         $tfa->delete();
         static::prune_expired_at();
         session()->remove("__tfa");
+        static::save_logged_device($user);
         return true;
     }
 
@@ -159,5 +161,14 @@ class TfaService
         Tfa::query()
             ->where("expired_at", "<", now()->timestamp)
             ?->delete();
+    }
+
+    /**
+     * save the logged device
+     *
+     * @param User $user
+     */
+    static public function save_logged_device(User $user)
+    {
     }
 }
