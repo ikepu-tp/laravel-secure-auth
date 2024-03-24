@@ -46,7 +46,7 @@ php artisan vendor:publish --tags=SecureAuth-config
         $user = User::query()
             ->where("email", $request->validated("email"))
             ->first();
-        if (!$user) throw new UnauthorizedException();
+        if (!$user || !Hash::check($request->validated("password"), $user->password)) throw new UnauthorizedException();
         return \ikepu_tp\SecureAuth\app\Http\Services\TfaService::make($user, $request->validated("remember", false));
     }
 ```
