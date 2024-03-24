@@ -130,6 +130,7 @@ class TfaService
 
         $tfa->delete();
         static::prune_expired_at();
+        session()->remove("__tfa");
         return true;
     }
 
