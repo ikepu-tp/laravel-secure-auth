@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sa_login_histories', function (Blueprint $table) {
+        Schema::create('sa_logged_devices', function (Blueprint $table) {
             $table->id();
             $table->uuid('loggedDeviceId')->unique()->index();
             $table->string('user_id')->index();
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sa_login_histories');
+        Schema::dropIfExists('sa_logged_devices');
     }
 };
