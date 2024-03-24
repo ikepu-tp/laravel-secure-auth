@@ -32,7 +32,7 @@ class NewDeviceService
             $sa_logged_device = new Sa_logged_device();
             event(new NewDeviceEvent($user, $sa_login_history));
         }
-        Cookie::queue("loggedDeviceId", $new_deviceId, 10080, "/", null, true, true, false, null);
+        Cookie::queue("loggedDeviceId", $new_deviceId, config("secure-auth.new_device_expires", 10080), "/", null, true, true, false, null);
         $sa_logged_device->fill([
             "loggedDeviceId" => $new_deviceId,
             "user_id" => $user->getKey(),
